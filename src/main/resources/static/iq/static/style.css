@@ -1,0 +1,8 @@
+body {font-family: 'Fira Sans', sans-serif;}
+.title {font-size: 200%; margin: 5px;}
+.subtitle {font-size: 150%; margin: 5px; color:#ff3300;}
+.category {font-weight: bold; margin: 5px; color:#3333ff;}
+.meal {margin-left: 3em; text-indent: -2em; margin-bottom: 5px; }
+.price {font-style: italic; color:#666699; white-space: nowrap;}
+.links {margin-top: 20px;}
+.links a {margin-right: 15px; color: darkgreen;}
