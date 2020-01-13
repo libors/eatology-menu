@@ -27,7 +27,7 @@ public class MenuParserTest {
 
     @Test
     public void testIt() throws IOException, TemplateException {
-        InputStream is = new ClassPathResource("menu.pdf").getInputStream();
+        InputStream is = new ClassPathResource("menu2.pdf").getInputStream();
 
         PDDocument pdDocument = PDDocument.load(is);
 
@@ -47,6 +47,8 @@ public class MenuParserTest {
             Template template = cfg.getTemplate("freemarker/menu.ftl");
             Map<String, Object> templateData = new HashMap<>();
             templateData.put("menu", day);
+            templateData.put("admin", false);
+            templateData.put("dayName", "day");
             StringWriter writer = new StringWriter();
             template.process(templateData, writer);
             System.out.println(writer.toString());
