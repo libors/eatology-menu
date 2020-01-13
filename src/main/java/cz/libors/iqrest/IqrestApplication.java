@@ -10,22 +10,17 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
 
 import static cz.libors.iqrest.DayNameUtil.checkMenuSaveRelevant;
-import static java.time.DayOfWeek.*;
 
-@SpringBootApplication
+@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 @RestController
 public class IqrestApplication {
 
@@ -43,18 +38,35 @@ public class IqrestApplication {
     }
 
     @GetMapping(path = "/iq", produces = "text/html; charset=UTF-8")
-    public String todaysMenu() throws Exception {
+    public String todayMenu() throws Exception {
         String dayName = DayNameUtil.getNameFromCurrentDate();
-        return getHtmlMenuString(dayName, true);
+        return getHtmlMenuString(dayName, true, false);
     }
 
-    @GetMapping(path = "/iq/{menu}" ,produces = "text/html; charset=UTF-8")
+    @GetMapping(path = "/iqadmin", produces = "text/html; charset=UTF-8")
+    public String todayMenuAdmin() throws Exception {
+        String dayName = DayNameUtil.getNameFromCurrentDate();
+        return getHtmlMenuString(dayName, true, true);
+    }
+
+    @GetMapping(path = "/iq/{menu}", produces = "text/html; charset=UTF-8")
     public String dayMenu(@PathVariable("menu") String dayReference) throws Exception {
         String name = DayNameUtil.resolveNameFromLink(dayReference);
-        return getHtmlMenuString(name, false);
+        return getHtmlMenuString(name, true, false);
     }
 
-    private String getHtmlMenuString(String dayName, boolean tryDownload) throws Exception {
+    @GetMapping(path = "/iqadmin/{menu}", produces = "text/html; charset=UTF-8")
+    public String dayMenuAdmin(@PathVariable("menu") String dayReference) throws Exception {
+        String name = DayNameUtil.resolveNameFromLink(dayReference);
+        return getHtmlMenuString(name, true, true);
+    }
+
+    @PostMapping(path = "/iqadmin/update", consumes = "application/json")
+    public void updateMenuItem(@RequestBody MenuDayFlags menuDayFlags) {
+        iqMenuSaver.updateDayFlags(menuDayFlags);
+    }
+
+    private String getHtmlMenuString(String dayName, boolean tryDownload, boolean admin) throws Exception {
         File file = Paths.get(rootPath, dayName).toFile();
         if (!file.exists() && tryDownload) {
             if (checkMenuSaveRelevant(dayName)) {
@@ -64,9 +76,9 @@ public class IqrestApplication {
             }
         }
         if (!file.exists()) {
-            return iqPageLoader.loadMissingMenuPage(dayName);
+            return iqPageLoader.loadMissingMenuPage(dayName, admin);
         } else {
-            return iqPageLoader.loadMenuForName(dayName);
+            return iqPageLoader.loadMenuForName(dayName, admin);
         }
     }
 

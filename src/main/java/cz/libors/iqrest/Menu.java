@@ -1,6 +1,7 @@
 package cz.libors.iqrest;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.*;
@@ -53,12 +54,16 @@ public class Menu {
     public static class Meal {
         private String name;
         private String price;
+        @JsonInclude(JsonInclude.Include.NON_EMPTY)
+        private List<String> flags;
 
         @JsonCreator
         public Meal(@JsonProperty("name") String name,
-                    @JsonProperty("price") String price) {
+                    @JsonProperty("price") String price,
+                    @JsonProperty("flags") List<String> flags) {
             this.name = name;
             this.price = price;
+            this.flags = flags;
         }
 
         public String getName() {
@@ -67,6 +72,14 @@ public class Menu {
 
         public String getPrice() {
             return price;
+        }
+
+        public List<String> getFlags() {
+            return flags;
+        }
+
+        public void setFlags(List<String> flags) {
+            this.flags = flags;
         }
     }
 }

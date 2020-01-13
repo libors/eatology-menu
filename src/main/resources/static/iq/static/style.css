@@ -6,3 +6,8 @@ body {font-family: 'Fira Sans', sans-serif;}
 .price {font-style: italic; color:#666699; white-space: nowrap;}
 .links {margin-top: 20px;}
 .links a {margin-right: 15px; color: darkgreen;}
+
+#savebutton{color:red}
+#saveresponse{color: red}
+.off {color: lightgrey !important;}
+i {text-indent: 0; margin-left: 0; vertical-align:middle;}

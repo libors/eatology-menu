@@ -22,25 +22,32 @@ public class IqPageLoader {
     private String iqurl;
     private Template menuTemplate;
     private Template missingTemplate;
+    private String password;
 
     private ObjectMapper mapper = new ObjectMapper();
 
     public IqPageLoader(@Value("${filePath}") String rootPath,
                         @Value("${iqUrl}") String iqurl,
                         @Qualifier("menu") Template menuTemplate,
-                        @Qualifier("missing") Template missingTemplate) {
+                        @Qualifier("missing") Template missingTemplate,
+                        @Value("${password}") String password) {
         this.rootPath = rootPath;
         this.iqurl = iqurl;
         this.menuTemplate = menuTemplate;
         this.missingTemplate = missingTemplate;
+        this.password = password;
     }
 
-    public String loadMenuForName(String name) throws Exception {
+    public String loadMenuForName(String name, boolean admin) throws Exception {
         File file = Paths.get(rootPath, name).toFile();
         Reader reader = new InputStreamReader(new FileInputStream(file), UTF_8);
         MenuDay menu = mapper.readValue(reader, MenuDay.class);
 
         Map<String, Object> templateData = new HashMap<>();
+        templateData.put("admin", admin);
+        if (admin) {
+            templateData.put("password", password);
+        }
         templateData.put("menu", menu);
         templateData.put("dayName", DayNameUtil.dayOfWeek(menu.getName()));
         StringWriter stringWriter = new StringWriter();
@@ -48,12 +55,13 @@ public class IqPageLoader {
         return stringWriter.toString();
     }
 
-    public String loadMissingMenuPage(String name) throws Exception {
+    public String loadMissingMenuPage(String name, boolean admin) throws Exception {
         StringWriter stringWriter = new StringWriter();
         Map<String, Object> templateData = new HashMap<>();
         templateData.put("name", name);
         templateData.put("dayName", DayNameUtil.dayOfWeek(name));
         templateData.put("iqurl", iqurl);
+        templateData.put("admin", admin);
         missingTemplate.process(templateData, stringWriter);
         return stringWriter.toString();
     }

@@ -10,8 +10,8 @@
 <div class="message">Menu pro tento den není k dispozici.</div>
 
 <div class="links">
-    <a href="/iq/${name}-prev">&lt;&lt; Předchozí</a>
-    <a href="/iq/${name}-next">Následující &gt;&gt;</a>
+    <a href="/${admin?string('iqadmin', 'iq')}/${name}-prev">&lt;&lt; Předchozí</a>
+    <a href="/${admin?string('iqadmin', 'iq')}/${name}-next">Následující &gt;&gt;</a>
     <a href="${iqurl}">Současné originální menu (pdf)</a>
 </div>
 

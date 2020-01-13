@@ -84,7 +84,7 @@ public class MenuParser {
         Assert.isTrue(matcher.matches(), "price pattern does not match: " + origName);
         String name = matcher.group(1) + matcher.group(3);
         String price = matcher.group(2);
-        return new Menu.Meal(name, price);
+        return new Menu.Meal(name, price, null);
     }
 
     interface LineParser {
