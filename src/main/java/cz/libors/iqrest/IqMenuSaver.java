@@ -12,6 +12,7 @@ import org.springframework.util.FileCopyUtils;
 
 import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import static cz.libors.iqrest.Menu.*;
@@ -20,11 +21,11 @@ import static java.nio.charset.StandardCharsets.*;
 @Component
 public class IqMenuSaver {
 
-    private String url;
-    private String rootPath;
-    private ObjectMapper mapper = new ObjectMapper();
+    private final String url;
+    private final String rootPath;
+    private final ObjectMapper mapper = new ObjectMapper();
 
-    private static Logger log = LoggerFactory.getLogger(IqMenuSaver.class);
+    private static final Logger log = LoggerFactory.getLogger(IqMenuSaver.class);
 
     private long lastDownload = 0;
 
@@ -75,7 +76,7 @@ public class IqMenuSaver {
     }
 
     private MenuDay readMenuDay(File file) {
-        try (Reader reader = new InputStreamReader(new FileInputStream(file), UTF_8)) {
+        try (Reader reader = new InputStreamReader(Files.newInputStream(file.toPath()), UTF_8)) {
             return mapper.readValue(reader, MenuDay.class);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -83,7 +84,7 @@ public class IqMenuSaver {
     }
 
     private void writeMenuDay(MenuDay menuDay, File f) {
-        try (Writer writer = new OutputStreamWriter(new FileOutputStream(f), UTF_8)) {
+        try (Writer writer = new OutputStreamWriter(Files.newOutputStream(f.toPath()), UTF_8)) {
             mapper.writeValue(writer, menuDay);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -94,7 +95,7 @@ public class IqMenuSaver {
         try {
             inputStream.reset();
             File f = Paths.get(rootPath, menu.getDays().get(0).getName() + ".pdf").toFile();
-            FileCopyUtils.copy(inputStream, new FileOutputStream(f));
+            FileCopyUtils.copy(inputStream, Files.newOutputStream(f.toPath()));
         } catch (IOException e) {
             throw new RuntimeException("Cannot save menu pdf", e);
         }

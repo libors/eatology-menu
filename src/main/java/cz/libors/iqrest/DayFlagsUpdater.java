@@ -12,7 +12,7 @@ import static java.util.Arrays.asList;
 
 public class DayFlagsUpdater {
 
-    private static Set<String> knownFlags = new HashSet<>(asList("vege", "hot", "glut"));
+    private static final Set<String> knownFlags = new HashSet<>(asList("vege", "hot", "glut"));
 
     public static MenuDay update(MenuDay day, MenuDayFlags menuDayFlags) {
         int idx = 0;

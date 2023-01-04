@@ -6,8 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 public class MenuDayFlags {
-    private String day;
-    private Map<String, Boolean> flags;
+    private final String day;
+    private final Map<String, Boolean> flags;
 
     @JsonCreator
     public MenuDayFlags(@JsonProperty("day") String day,

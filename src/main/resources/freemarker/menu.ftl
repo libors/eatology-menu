@@ -1,6 +1,6 @@
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="/iq/static/style.css">
+    <link rel="stylesheet" type="text/css" href="${cssPath}">
     <script src="https://kit.fontawesome.com/36e07d234f.js" crossorigin="anonymous"></script>
 
     <#if admin>

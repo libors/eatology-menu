@@ -31,7 +31,7 @@ public class IqrestApplication {
     @Autowired
     private IqPageLoader iqPageLoader;
 
-    private static Logger log = LoggerFactory.getLogger(IqrestApplication.class);
+    private static final Logger log = LoggerFactory.getLogger(IqrestApplication.class);
 
     public static void main(String[] args) {
         SpringApplication.run(IqrestApplication.class, args);

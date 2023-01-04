@@ -27,14 +27,18 @@ public class MenuParserTest {
 
     @Test
     public void testIt() throws IOException, TemplateException {
-        InputStream is = new ClassPathResource("menu2.pdf").getInputStream();
+        convertPdf("menu");
+        convertPdf("menu2");
+        convertPdf("menu3");
+    }
+
+    private void convertPdf(String name) throws IOException, TemplateException {
+        InputStream is = new ClassPathResource(name + ".pdf").getInputStream();
 
         PDDocument pdDocument = PDDocument.load(is);
 
         PDFTextStripper textStripper = new PDFTextStripper();
         String text = textStripper.getText(pdDocument);
-
-        //System.out.println(text);
 
         MenuParser parser = new MenuParser();
         Menu menu = parser.parse(text);
@@ -48,12 +52,12 @@ public class MenuParserTest {
             Map<String, Object> templateData = new HashMap<>();
             templateData.put("menu", day);
             templateData.put("admin", false);
-            templateData.put("dayName", "day");
-            StringWriter writer = new StringWriter();
+            templateData.put("dayName", DayNameUtil.dayOfWeek(day.getName()));
+            templateData.put("cssPath", "style.css");
+            Writer writer = new FileWriter("./" + name + "_" + day.getName() + ".html");
             template.process(templateData, writer);
-            System.out.println(writer.toString());
+            writer.close();
         }
-
     }
 
     @Test

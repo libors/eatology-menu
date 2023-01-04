@@ -16,9 +16,9 @@ import static java.time.temporal.TemporalAdjusters.*;
 
 public class DayNameUtil {
 
-    private static Pattern pdfDatePattern = Pattern.compile("^\\s*([0-9]*)\\.\\s*([0-9]*)\\.\\s*([0-9]*)\\s*$");
-    private static DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("d.M.yyyy");
-    private static Locale locale = new Locale("cs", "CZ");
+    private static final Pattern pdfDatePattern = Pattern.compile("^\\s*([0-9]*)\\.\\s*([0-9]*)\\.\\s*([0-9]*)\\s*$");
+    private static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("d.M.yyyy");
+    private static final Locale locale = new Locale("cs", "CZ");
 
     public static String getNameFromCurrentDate() {
         return LocalDate.now().format(dateFormat);
@@ -28,12 +28,7 @@ public class DayNameUtil {
         return LocalDate.parse(menuName, dateFormat);
     }
 
-    public static String getNameFromCurrentWeek() {
-        return LocalDate.now().with(MONDAY).format(dateFormat);
-    }
-
     public static String getNameFromParsedPdf(String origPdfName) {
-        LocalDate date = LocalDate.now();
         Matcher matcher = pdfDatePattern.matcher(origPdfName);
         Assert.isTrue(matcher.matches(), "date '" + origPdfName + "' does not match.");
         String year = matcher.group(3).isEmpty() ? String.valueOf(LocalDate.now().getYear()) : matcher.group(3);

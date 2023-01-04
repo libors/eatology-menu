@@ -11,13 +11,13 @@ import java.util.regex.Pattern;
 
 public class MenuParser {
 
-    private State state = State.NOTHING;
-    private Locale locale = new Locale("cs", "CZ");
-    private Pattern dayNamePattern = Pattern.compile("^.*? ([0-9.\\s]*)$");
-    private Pattern pricePattern = Pattern.compile("^(.*?)([0-9]*\\s*kč)(.*)$");
+    private State state = State.WAIT_FOR_CZECH_DAY;
+    private final Locale locale = new Locale("cs", "CZ");
+    private final Pattern dayNamePattern = Pattern.compile("^.*? ([0-9.\\s]*)$");
+    private final Pattern pricePattern = Pattern.compile("^(.*?)([0-9]*\\s*kč)(.*)$");
     private boolean weakly = false;
 
-    private Menu menu = new Menu();
+    private final Menu menu = new Menu();
     private Menu.MenuDay currentDay = null;
     private List<Menu.Meal> currentMeals;
 
@@ -37,7 +37,7 @@ public class MenuParser {
     }
 
     private enum State implements LineParser {
-        NOTHING {
+        WAIT_FOR_CZECH_DAY {
             @Override
             public void parse(String line, MenuParser context) {
                 if (line.startsWith("polední")) {
@@ -58,8 +58,8 @@ public class MenuParser {
                 if (line.startsWith("týdenní")) {
                     context.weakly = true;
                 } else if (line.startsWith("lunch")) {
-                    context.state = NOTHING;
-                } else if (line.split(" ").length <=3) { // kategorie
+                    context.state = WAIT_FOR_CZECH_DAY;
+                } else if (context.mealNameBuilder.isEmpty() && !Character.isDigit(line.charAt(0))) { // kategorie
                         context.currentMeals = new ArrayList<>();
                         if (context.weakly) {
                             context.currentDay.getWeekly().put(line, context.currentMeals);
