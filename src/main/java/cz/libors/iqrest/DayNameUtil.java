@@ -16,7 +16,7 @@ import static java.time.temporal.TemporalAdjusters.*;
 
 public class DayNameUtil {
 
-    private static final Pattern pdfDatePattern = Pattern.compile("^\\s*([0-9]*)\\.\\s*([0-9]*)\\.\\s*([0-9]*)\\s*$");
+    private static final Pattern pdfDatePattern = Pattern.compile("^\\s*([0-9]*)\\s*\\.\\s*([0-9]*)\\s*\\.\\s*([0-9]*)\\s*$");
     private static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("d.M.yyyy");
     private static final Locale locale = new Locale("cs", "CZ");
 
