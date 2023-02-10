@@ -35,6 +35,18 @@
                     });
 
                 });
+                $('#regeneratebutton').click(function() {
+                      $.ajax({
+                        "url": "/iqadmin/regenerate/${menu.name}",
+                        "type": "put",
+                        success: function(){location.reload();},
+                        error: function(){$('#saveresponse').text("error");},
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader ("Authorization", "Basic " + btoa("admin:${password}"));
+                        },
+                    });
+
+                });
             });
         </script>
     </#if>
@@ -83,6 +95,7 @@
 
 <#if admin>
     <button id="savebutton" type="button">Save changes</button>
+    <button id="regeneratebutton" type="button">Regenerate</button>
     <div id="saveresponse"></div>
 </#if>
 

@@ -66,6 +66,11 @@ public class IqrestApplication {
         iqMenuSaver.updateDayFlags(menuDayFlags);
     }
 
+    @PutMapping(path="/iqadmin/regenerate/{menu}")
+    public void regenerate(@PathVariable("menu") String dayReference) {
+        iqMenuSaver.regenerate(dayReference);
+    }
+
     private String getHtmlMenuString(String dayName, boolean tryDownload, boolean admin) throws Exception {
         File file = Paths.get(rootPath, dayName).toFile();
         if (!file.exists() && tryDownload) {

@@ -28,6 +28,10 @@ public class DayNameUtil {
         return LocalDate.parse(menuName, dateFormat);
     }
 
+    public static String previousDay(String day) {
+        return LocalDate.parse(day, dateFormat).minusDays(1).format(dateFormat);
+    }
+
     public static String getNameFromParsedPdf(String origPdfName) {
         Matcher matcher = pdfDatePattern.matcher(origPdfName);
         Assert.isTrue(matcher.matches(), "date '" + origPdfName + "' does not match.");
@@ -44,6 +48,10 @@ public class DayNameUtil {
 
     public static String dayOfWeek(String name) {
         return LocalDate.parse(name, dateFormat).getDayOfWeek().getDisplayName(TextStyle.FULL, locale);
+    }
+
+    public static int dayOfWeekNum(String name) {
+        return LocalDate.parse(name, dateFormat).getDayOfWeek().getValue();
     }
 
     public static boolean checkMenuSaveRelevant(String menuName, LocalDate now) {

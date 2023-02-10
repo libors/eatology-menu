@@ -27,9 +27,11 @@ public class MenuParserTest {
 
     @Test
     public void testIt() throws IOException, TemplateException {
+        // generate html files for menus from different times (slight format changes) to manually check the result is correct
         convertPdf("menu");
         convertPdf("menu2");
         convertPdf("menu3");
+        convertPdf("menu4");
     }
 
     private void convertPdf(String name) throws IOException, TemplateException {

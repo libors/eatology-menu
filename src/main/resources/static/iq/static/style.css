@@ -11,3 +11,4 @@ body {font-family: 'Fira Sans', sans-serif;}
 #saveresponse{color: red}
 .off {color: lightgrey !important;}
 i {text-indent: 0; margin-left: 0; vertical-align:middle;}
+button {margin: 10px;}

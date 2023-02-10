@@ -8,12 +8,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 import org.springframework.util.FileCopyUtils;
 
 import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 
 import static cz.libors.iqrest.Menu.*;
 import static java.nio.charset.StandardCharsets.*;
@@ -54,6 +56,20 @@ public class IqMenuSaver {
     public void updateDayFlags(MenuDayFlags menuDayFlags) {
         File file = Paths.get(rootPath, menuDayFlags.getDay()).toFile();
         MenuDay day = readMenuDay(file);
+        createBackupIfNotExists(file);
+        MenuDay updated = DayFlagsUpdater.update(day, menuDayFlags);
+        writeMenuDay(updated, file);
+    }
+
+    public void regenerate(String day) {
+        File file = Paths.get(rootPath, day).toFile();
+        Assert.isTrue(file.exists(), "File " + file + " does not exist.");
+        MenuDay updated = regenerateDay(day);
+        createBackupIfNotExists(file);
+        writeMenuDay(updated, file);
+    }
+
+    private void createBackupIfNotExists(File file) {
         File backup = new File(file.getAbsolutePath() + ".backup");
         if (!backup.exists()) {
             log.info("Making backup file {}.", backup.getAbsolutePath());
@@ -63,8 +79,31 @@ public class IqMenuSaver {
                 throw new RuntimeException(e);
             }
         }
-        MenuDay updated = DayFlagsUpdater.update(day, menuDayFlags);
-        writeMenuDay(updated, file);
+    }
+
+    private MenuDay regenerateDay(String day) {
+        InputStream pdf = findPdfForDay(day);
+        String text = extractTextFromPdf(pdf);
+        MenuParser parser = new MenuParser();
+        Menu menu = parser.parse(text);
+        MenuDay menuDay = menu.getDays().stream().filter(d -> d.getName().equals(day)).findFirst().orElse(null);
+        Assert.isTrue(menuDay != null, "Cannot find menu day " + day);
+        return menuDay;
+    }
+
+    private InputStream findPdfForDay(String day) {
+        File file = Paths.get(rootPath, day + ".pdf").toFile();
+        String currentDay = day;
+        while (!file.exists() && DayNameUtil.dayOfWeekNum(currentDay) != 7) {
+            currentDay = DayNameUtil.previousDay(currentDay);
+            file = Paths.get(rootPath, currentDay + ".pdf").toFile();
+        }
+        Assert.isTrue(file.exists(), "No pdf find for menu day " + day);
+        try {
+            return Files.newInputStream(file.toPath());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void saveMenuToFiles(Menu menu) {

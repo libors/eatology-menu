@@ -59,7 +59,7 @@ public class MenuParser {
                     context.weakly = true;
                 } else if (line.startsWith("lunch")) {
                     context.state = WAIT_FOR_CZECH_DAY;
-                } else if (context.mealNameBuilder.isEmpty() && !Character.isDigit(line.charAt(0))) { // kategorie
+                } else if (context.mealNameBuilder.isEmpty() && Character.isAlphabetic(line.charAt(0))) { // kategorie
                         context.currentMeals = new ArrayList<>();
                         if (context.weakly) {
                             context.currentDay.getWeekly().put(line, context.currentMeals);
