@@ -57,7 +57,13 @@ public class MenuParser {
             public void parse(String line, MenuParser context) {
                 if (line.startsWith("týdenní")) {
                     context.weakly = true;
-                } else if (line.startsWith("lunch")) {
+                } else if (line.startsWith("lunch")
+                        || line.contains("weekly") /* solves some eatology pdf typo cases */
+                        || line.contains("monday")
+                        || line.contains("tuesday")
+                        || line.contains("wednesday")
+                        || line.contains("thursday")
+                        || line.contains("friday")) {
                     context.state = WAIT_FOR_CZECH_DAY;
                 } else if (context.mealNameBuilder.isEmpty() && Character.isAlphabetic(line.charAt(0))) { // kategorie
                         context.currentMeals = new ArrayList<>();

@@ -50,6 +50,7 @@ public class IqPageLoader {
         }
         templateData.put("menu", menu);
         templateData.put("dayName", DayNameUtil.dayOfWeek(menu.getName()));
+        templateData.put("iqurl", iqurl);
         templateData.put("cssPath", "/iq/static/style.css");
         StringWriter stringWriter = new StringWriter();
         menuTemplate.process(templateData, stringWriter);

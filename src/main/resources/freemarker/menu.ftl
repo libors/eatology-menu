@@ -1,5 +1,6 @@
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" type="text/css" href="${cssPath}">
     <script src="https://kit.fontawesome.com/36e07d234f.js" crossorigin="anonymous"></script>
 
@@ -102,6 +103,8 @@
 <div class="links">
     <a href="/${admin?string('iqadmin', 'iq')}/${menu.name}-prev">&lt;&lt; Předchozí</a>
     <a href="/${admin?string('iqadmin', 'iq')}/${menu.name}-next">Následující &gt;&gt;</a>
+    <a href="/${admin?string('iqadmin', 'iq')}">Dnes</a>
+    <a href="${iqurl}">Aktuální Eatology pdf</a>
 </div>
 
 </body>

@@ -32,6 +32,8 @@ public class MenuParserTest {
         convertPdf("menu2");
         convertPdf("menu3");
         convertPdf("menu4");
+        convertPdf("menu5");
+        convertPdf("menu6");
     }
 
     private void convertPdf(String name) throws IOException, TemplateException {

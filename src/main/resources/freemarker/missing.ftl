@@ -1,6 +1,7 @@
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="/iq/static/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="${cssPath}">
 </head>
 
 <body>
@@ -12,7 +13,8 @@
 <div class="links">
     <a href="/${admin?string('iqadmin', 'iq')}/${name}-prev">&lt;&lt; Předchozí</a>
     <a href="/${admin?string('iqadmin', 'iq')}/${name}-next">Následující &gt;&gt;</a>
-    <a href="${iqurl}">Současné originální menu (pdf)</a>
+    <a href="/${admin?string('iqadmin', 'iq')}">Dnes</a>
+    <a href="${iqurl}">Aktuální Eatology pdf</a>
 </div>
 
 </body>

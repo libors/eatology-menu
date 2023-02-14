@@ -1,11 +1,11 @@
-body {font-family: 'Fira Sans', sans-serif;}
-.title {font-size: 200%; margin: 5px;}
-.subtitle {font-size: 150%; margin: 5px; color:#ff3300;}
-.category {font-weight: bold; margin: 5px; color:#3333ff;}
-.meal {margin-left: 3em; text-indent: -2em; margin-bottom: 5px; }
+body {font-family: 'Fira Sans', sans-serif; font-size: 16px}
+.title {font-size: 160%; margin: 4px;}
+.subtitle {font-size: 130%; margin: 4px; color:#ff3300;}
+.category {font-weight: bold; margin: 4px; color:#3333ff;}
+.meal {margin-left: 2.4em; text-indent: -1.7em; margin-bottom: 4px; }
 .price {font-style: italic; color:#666699; white-space: nowrap;}
-.links {margin-top: 20px;}
-.links a {margin-right: 15px; color: darkgreen;}
+.links {margin-top: 1.5em; margin-left: 4px;}
+.links a {margin-right: 1em; color: darkgreen; margin-bottom: 1em; white-space: nowrap; display: inline-block;}
 
 #savebutton{color:red}
 #saveresponse{color: red}
